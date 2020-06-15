@@ -5,7 +5,6 @@ var webpack = require('webpack')
 module.exports = {
   mode: 'production',
   entry: {
-    'openvcall.server': './src/openvcall.server.ts',
     'openvcall.client': './src/openvcall.client.ts',
   },
   output: {

@@ -1,6 +1,9 @@
-body, html {
+body,
+html {
     background-color: gray;
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 #videos {
@@ -11,19 +14,25 @@ body, html {
     margin-right: auto;
 }
 
-#subscriber {
+#subscribers {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr;
 }
 
-#publisher {
+#subscribers div.participant {
+    background-color: red;
+}
+
+#local-user {
     position: absolute;
     width: 360px;
-    height: 240px;
+    height: 200px;
     bottom: 10px;
     left: 10px;
     z-index: 100;
