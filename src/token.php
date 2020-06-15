@@ -25,4 +25,4 @@ $tokenOptions = array(
 // Replace with the correct session ID:
 $token = $opentok->generateToken($sessionId, $tokenOptions);
 
-$invitedURL = "https://".$_SERVER['SERVER_NAME']."/live.html?token=$token&sessionId=$sessionId";
+$invitedURL = "https://".$_SERVER['SERVER_NAME']."/opentok/live.html?token=$token&sessionId=$sessionId";
