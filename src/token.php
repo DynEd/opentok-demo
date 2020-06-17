@@ -10,7 +10,6 @@ $secretKey = "c071e1e9cb983752fea257416b17e03209796a12";
 $opentok = new OpenTok($apiKey, $secretKey);
 
 $sessionOptions = array(
-    'archiveMode' => ArchiveMode::ALWAYS,
     'mediaMode' => MediaMode::ROUTED
 );
 $session = $opentok->createSession();
