@@ -8,12 +8,35 @@
     <link rel="stylesheet" href="./styles.css">
     <script src="./dist/openvcall.client.js"></script>
     <title>openVcall</title>
+    <script type="text/javascript">
+        window.onload = function () {
+            var url = new URL(window.location.href)
+            var token = url.searchParams.get("token")
+            var sessionId = url.searchParams.get("sessionId")
+            var openVcall = new OpenVCallClient("45992642", sessionId, "local-user", "subscribers", "videos")
+            document.getElementById("join").onclick = function() {
+                openVcall.connect(token);
+            }
+            document.getElementById("disconnect").onclick = function() {
+                openVcall.disconnect();
+            }
+            document.getElementById("share-screen").onclick = function() {
+                openVcall.startShareScreen();
+            }
+        }
+    </script>
 </head>
 
 <body>
     <div id="videos">
+        <!-- <div id="screen"></div> -->
         <div id="subscribers"></div>
         <div id="local-user"></div>
+    </div>
+    <div id="controll">
+        <button id="join">JOIN</button>
+        <button id="disconnect">DISCONNECT</button>
+        <button id="share-screen">SHARE SCREEN</button>
     </div>
 </body>
 

@@ -3,7 +3,6 @@ require "./vendor/autoload.php";
 use OpenTok\OpenTok;
 use OpenTok\Role;
 use OpenTok\MediaMode;
-use OpenTok\ArchiveMode;
 
 $apiKey = "45992642";
 $secretKey = "c071e1e9cb983752fea257416b17e03209796a12";
@@ -24,4 +23,4 @@ $tokenOptions = array(
 // Replace with the correct session ID:
 $token = $opentok->generateToken($sessionId, $tokenOptions);
 
-$invitedURL = "https://".$_SERVER['SERVER_NAME']."/opentok/live.html?token=$token&sessionId=$sessionId";
+$invitedURL = "https://".$_SERVER['SERVER_NAME']."/live.html?token=$token&sessionId=$sessionId";
