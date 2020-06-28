@@ -14,7 +14,17 @@ html {
     margin-right: auto;
 }
 
+#screen {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 50px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #subscribers {
+    transition:1s ease-in-out;
+    transform-origin: left top;
     position: absolute;
     left: 0;
     top: 0;
@@ -75,4 +85,19 @@ html {
 }
 #controll button:hover {
     opacity: 0.8;
+}
+
+#anim-subscribers {
+    position: absolute;
+    transition:1s ease-in-out;
+    transform-origin: right bottom;
+    width: 360px !important;
+    height: 200px !important;
+    border: 3px solid white;
+    left: unset !important;
+    top: unset !important;
+    bottom: 10px;
+    right: 10px;
+    z-index: 100 !important;
+    display: grid;
 }

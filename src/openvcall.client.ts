@@ -37,20 +37,23 @@ export default class OpenVCallClient {
             height: '100%'
         }, this._onError)
 
-        // this._initStopShareScreen()
+        this._initStopShareScreen()
         this.session.connect(token, error => {
             if (error) {
                 console.log(error)
             } else {
                 this.session.publish(this.localUser, this._onError);
-                // this._requestStartArchiving(this.sessionId)
+                this._requestStartArchiving(this.sessionId)
             }
         })
     }
 
     disconnect() {
-        this.session.disconnect()
-        this.session.forceUnpublish(this.localUser.stream, this._onError)
+        this.session.off();
+        this.session.disconnect();
+        this.session.unpublish(this.localUser)
+        this.localUser.destroy();
+        this._subContainerElement.innerHTML = ""
     }
 
     startShareScreen() {
@@ -68,7 +71,7 @@ export default class OpenVCallClient {
                 var currentScreenShareElement = document.createElement('div');
                 currentScreenShareElement.id = this._currentScreenShareId
 
-                this._screenShareElement.appendChild(currentScreenShareElement)
+                // this._screenShareElement.appendChild(currentScreenShareElement)
                 var publisher = OpenTok.initPublisher(currentScreenShareElement, publishOptions, error => {
                     if (error) {
                         console.log(error)
@@ -105,6 +108,7 @@ export default class OpenVCallClient {
                 currentScreenShareElement.style.width = "100%"
                 currentScreenShareElement.style.height = "100%"
                 currentScreenShareElement.style.position = "absolute"
+                this._subContainerElement.id = "anim-subscribers"
             } else {
                 this._addSubscriberView(event.stream.streamId)
                 this.session.subscribe(event.stream, event.stream.streamId, {
@@ -115,20 +119,24 @@ export default class OpenVCallClient {
             }
         })
 
+        this.session.on("streamDestroyed", event => {
+            document.getElementById(event.stream.streamId).remove()
+        })
+
         this.session.on("sessionDisconnected", event => {
             this._subContainerElement.innerHTML = ""
             document.getElementById(this._currentScreenShareId).remove()
-            // this._requestStopArchiving(this._archiveId)
+            this._requestStopArchiving(this._archiveId)
         });
     }
 
     _initStopShareScreen() {
         this.session.on('mediaStopped', event => {
-            this._screenShareElement.style.display = "none"
+            this._subContainerElement.id = this.subscribersTagId
         })
 
         this.session.on('streamDestroyed', event => {
-            this._screenShareElement.style.display = "none"
+            this._subContainerElement.id = this.subscribersTagId
         })
     }
 
@@ -136,7 +144,7 @@ export default class OpenVCallClient {
         var subscriber = document.createElement("div") as HTMLDivElement
         subscriber.id = id
         this._subContainerElement.appendChild(subscriber)
-        if (this._subContainerElement.childElementCount > 1) {
+        if (this._subContainerElement.childNodes.length > 1) {
             this._subContainerElement.style.gridTemplateColumns = "1fr 1fr"
         } else {
             this._subContainerElement.style.gridTemplateColumns = "1fr"
@@ -145,7 +153,7 @@ export default class OpenVCallClient {
 
     _removeSubscriberView(id: string) {
         document.getElementById(id).remove()
-        if (this._subContainerElement.childElementCount > 1) {
+        if (this._subContainerElement.childNodes.length > 1) {
             this._subContainerElement.style.gridTemplateColumns = "1fr 1fr"
         } else {
             this._subContainerElement.style.gridTemplateColumns = "1fr"

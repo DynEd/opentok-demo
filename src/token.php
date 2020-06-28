@@ -17,7 +17,7 @@ $sessionId = $session->getSessionId();
 $metaData = "username=Bob,userLevel=4"; // custom additional data that can added
 $tokenOptions = array(
     'role' => Role::PUBLISHER, 
-    'expireTime' => time()+(7 * 24 * 60 * 60),
+    // 'expireTime' => time()+(7 * 24 * 60 * 60),
     'data' => $metaData
 );
 // Replace with the correct session ID:
