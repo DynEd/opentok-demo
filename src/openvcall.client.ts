@@ -64,7 +64,7 @@ export default class OpenVCallClient {
                 alert("Please install extension.");
             } else {
                 var publishOptions: OpenTok.PublisherProperties = {
-                    maxResolution: { width: 1920, height: 1080 },
+                    maxResolution: { width: 640, height: 480 },
                     videoSource: "screen"
                 };
 
