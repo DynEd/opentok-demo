@@ -15,8 +15,13 @@ include_once "./src/token.php";
 
 <body>
     <div id="content" style="width: 100%;text-align: center;">
-        <h1>Session Created! Copy this invited link:</h1>
-        <input value="<?php echo $invitedURL;?>" type="text" id="invite-link" style="width: 75%; height: 50px;text-align: center;font-size: 3em;border-radius: 15px;padding: 10px;">
+        <h1>Coach link:</h1>
+        <input value="<?php echo $coachURL;?>" type="text" id="invite-link" style="width: 75%; height: 50px;text-align: center;font-size: 3em;border-radius: 15px;padding: 10px;">
+    </div>
+
+    <div id="content" style="width: 100%;text-align: center;">
+        <h1>Student link:</h1>
+        <input value="<?php echo $studentURL;?>" type="text" id="invite-link" style="width: 75%; height: 50px;text-align: center;font-size: 3em;border-radius: 15px;padding: 10px;">
     </div>
 </body>
 

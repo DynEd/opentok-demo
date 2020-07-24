@@ -6,6 +6,7 @@ export default class OpenVCallClient {
     _screenShareElement: HTMLDivElement
     _subContainerElement: HTMLDivElement
     _archiveId: string
+    _userName: string
 
     apiKey: string
     token: string
@@ -28,22 +29,23 @@ export default class OpenVCallClient {
         this.session = OpenTok.initSession(apiKey, sessionId)
     }
 
-    connect(token: string) {
+    connect(token: string, name: string) {
         this.token = token
+        this._userName = name
         this._initSubscribers()
         this.localUser = OpenTok.initPublisher(this.localUserTagId, {
+            name: name,
             insertMode: 'append',
             width: '100%',
             height: '100%'
         }, this._onError)
 
-        this._initStopShareScreen()
         this.session.connect(token, error => {
             if (error) {
                 console.log(error)
             } else {
                 this.session.publish(this.localUser, this._onError);
-                this._requestStartArchiving(this.sessionId)
+                // this._requestStartArchiving(this.sessionId)
             }
         })
     }
@@ -64,6 +66,7 @@ export default class OpenVCallClient {
                 alert("Please install extension.");
             } else {
                 var publishOptions: OpenTok.PublisherProperties = {
+                    name: this._userName,
                     maxResolution: { width: 640, height: 480 },
                     videoSource: "screen"
                 };
@@ -93,7 +96,6 @@ export default class OpenVCallClient {
     _initSubscribers() {
         this.session.on('streamCreated', event => {
             if (event.stream.videoType === 'screen') {
-
                 var currentScreenShareElement = document.createElement('div');
                 currentScreenShareElement.id = this._currentScreenShareId
 
@@ -101,7 +103,7 @@ export default class OpenVCallClient {
                 this.session.subscribe(event.stream, this._currentScreenShareId, {
                     insertMode: 'append',
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
                 }, this._onError)
 
                 currentScreenShareElement.style.zIndex = "11"
@@ -119,25 +121,22 @@ export default class OpenVCallClient {
             }
         })
 
+        this.session.on('mediaStopped', event => {
+            this._subContainerElement.id = this.subscribersTagId
+        })
+
         this.session.on("streamDestroyed", event => {
-            document.getElementById(event.stream.streamId).remove()
+            if (event.stream.videoType == 'screen') {
+                this._subContainerElement.id = this.subscribersTagId
+            }
+            this._removeSubscriberView(event.stream.streamId)
         })
 
         this.session.on("sessionDisconnected", event => {
             this._subContainerElement.innerHTML = ""
             document.getElementById(this._currentScreenShareId).remove()
-            this._requestStopArchiving(this._archiveId)
+            // this._requestStopArchiving(this._archiveId)
         });
-    }
-
-    _initStopShareScreen() {
-        this.session.on('mediaStopped', event => {
-            this._subContainerElement.id = this.subscribersTagId
-        })
-
-        this.session.on('streamDestroyed', event => {
-            this._subContainerElement.id = this.subscribersTagId
-        })
     }
 
     _addSubscriberView(id: string) {
@@ -152,7 +151,8 @@ export default class OpenVCallClient {
     }
 
     _removeSubscriberView(id: string) {
-        document.getElementById(id).remove()
+        var elm = document.getElementById(id)
+        if (elm) elm.remove()
         if (this._subContainerElement.childNodes.length > 1) {
             this._subContainerElement.style.gridTemplateColumns = "1fr 1fr"
         } else {
@@ -162,6 +162,7 @@ export default class OpenVCallClient {
 
     _requestStartArchiving(sessionId: string) {
         var archiveOptions = {
+            "name": "CoachName-StudentName-11100023232",
             "sessionId": sessionId,
             "hasAudio": true,
             "hasVideo": true,

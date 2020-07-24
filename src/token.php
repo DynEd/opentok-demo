@@ -1,5 +1,7 @@
 <?php
 require "./vendor/autoload.php";
+
+use OpenTok\ArchiveMode;
 use OpenTok\OpenTok;
 use OpenTok\Role;
 use OpenTok\MediaMode;
@@ -9,18 +11,25 @@ $secretKey = "c071e1e9cb983752fea257416b17e03209796a12";
 $opentok = new OpenTok($apiKey, $secretKey);
 
 $sessionOptions = array(
+    'archiveMode' => ArchiveMode::ALWAYS,
     'mediaMode' => MediaMode::ROUTED
 );
-$session = $opentok->createSession();
+$session = $opentok->createSession($sessionOptions);
 $sessionId = $session->getSessionId();
 
-$metaData = "username=Bob,userLevel=4"; // custom additional data that can added
-$tokenOptions = array(
-    'role' => Role::PUBLISHER, 
-    // 'expireTime' => time()+(7 * 24 * 60 * 60),
-    'data' => $metaData
-);
-// Replace with the correct session ID:
-$token = $opentok->generateToken($sessionId, $tokenOptions);
+// Getnerate token coach
+$tokenCoach = $opentok->generateToken($sessionId, array(
+    'role' => Role::PUBLISHER,
+    'data' => "username=CoachName",
+    'initialLayoutClassList' => array('focus')
+));
 
-$invitedURL = "https://".$_SERVER['SERVER_NAME']."/opentok/live.html?token=$token&sessionId=$sessionId";
+// Generate token student
+$tokenStudent = $opentok->generateToken($sessionId, array(
+    'role' => Role::PUBLISHER,
+    'data' => "username=StudentName",
+    'initialLayoutClassList' => array('focus')
+));
+
+$coachURL = "https://" . $_SERVER['SERVER_NAME'] . "/opentok/live.html?token=$tokenCoach&sessionId=$sessionId&name=COACHNAME";
+$studentURL = "https://" . $_SERVER['SERVER_NAME'] . "/opentok/live.html?token=$tokenStudent&sessionId=$sessionId&name=STUDENTNAME";

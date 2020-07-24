@@ -13,9 +13,10 @@
             var url = new URL(window.location.href)
             var token = url.searchParams.get("token")
             var sessionId = url.searchParams.get("sessionId")
+            var name = url.searchParams.get("name")
             var openVcall = new OpenVCallClient("45992642", sessionId, "local-user", "subscribers", "videos")
             document.getElementById("join").onclick = function() {
-                openVcall.connect(token);
+                openVcall.connect(token, name);
             }
             document.getElementById("disconnect").onclick = function() {
                 openVcall.disconnect();
