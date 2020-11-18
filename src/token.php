@@ -31,5 +31,5 @@ $tokenStudent = $opentok->generateToken($sessionId, array(
     'initialLayoutClassList' => array('focus')
 ));
 
-$coachURL = "https://" . $_SERVER['SERVER_NAME'] . "/OpenTokJs/live.html?token=$tokenCoach&sessionId=$sessionId&name=COACHNAME";
-$studentURL = "https://" . $_SERVER['SERVER_NAME'] . "/OpenTokJs/live.html?token=$tokenStudent&sessionId=$sessionId&name=STUDENTNAME";
+$coachURL = "https://" . $_SERVER['SERVER_NAME'] . "/live.html?token=$tokenCoach&sessionId=$sessionId&name=COACHNAME";
+$studentURL = "https://" . $_SERVER['SERVER_NAME'] . "/live.html?token=$tokenStudent&sessionId=$sessionId&name=STUDENTNAME";
