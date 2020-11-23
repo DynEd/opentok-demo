@@ -37,7 +37,9 @@ export default class OpenVCallClient {
             name: name,
             insertMode: 'append',
             width: '100%',
-            height: '100%'
+            height: '100%',
+            resolution: "640x480",
+            frameRate:15
         }, this._onError)
 
         this.session.connect(token, error => {
